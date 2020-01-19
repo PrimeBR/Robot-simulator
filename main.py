@@ -1,6 +1,6 @@
 import random
 import math
-
+import json
 
 class Map:
     __slots__ = ('width', 'height', 'map', 'barriers', 'barriers_count')
@@ -50,7 +50,7 @@ class Map:
                 self.map[y + cy][x + cx] = colour
 
     def remove_barrier(self, x, y):
-        colour = self.map[x][y]
+        colour = self.map[y][x]
         for y in range(self.height):
             for x in range(self.width):
                 if self.map[y][x] == colour:
@@ -65,7 +65,8 @@ class Robot:
                  'c_y',
                  'c_x',
                  'angle',
-                 'step')
+                 'step',
+                 'trace')
 
     def __init__(self, center_x, center_y):
         self.c_x = center_x
@@ -78,6 +79,7 @@ class Robot:
                            'LEFT': [-540, -180, 180, 540]}
         self.angle = 90
         self.step = 1
+        self.trace = ''
 
     def get_direction(self):
         return self.orientation
@@ -87,6 +89,9 @@ class Robot:
 
     def get_y(self):
         return self.c_y
+
+    def get_trace(self):
+        return self.trace
 
     def turn_90(self):
         self.angle -= 90
@@ -165,9 +170,14 @@ class Robot:
         return False
 
     def print_state(self, off_x, off_y):
-        print(f'Robot direction: {self.orientation}')
-        print(f'Robot arrived to [{self.c_x + off_x}, {self.c_y + off_y}]'
-              f' from [{self.c_x}, {self.c_y}]')
+        if off_x == 0 and off_y == 0:
+            state = f'Robot turned {self.orientation}'
+        else:
+            state = f'Robot direction: {self.orientation}\n'\
+                    f'Robot arrived to [{self.c_x + off_x}, {self.c_y + off_y}]' \
+                    f' from [{self.c_x}, {self.c_y}]'
+        self.trace += f'{state}\n'
+        print(state)
 
 
 def calculate_viewzone(field, robot, x_1, x_2, y_1, y_2):
@@ -271,13 +281,25 @@ def command_handler(robot, field):
         field.map[y][x] = 0
 
 
+def save_logs(robot):
+    answer = ''
+    while answer not in ['Y', 'N']:
+        answer = input('Do you want to save robot traces(Y/N)?: ').upper()
+    if answer == 'Y':
+        with open('traces.json', 'w') as file:
+            json.dump(robot.get_trace(), file)
+    else:
+        return None
+
+
 if __name__ == '__main__':
     x = read_param('X')
     y = read_param('Y')
     count = read_param('number of barriers')
     field = Map(x, y, count)
     center_x = x // 2
-    center_y = x // 2
+    center_y = y // 2
     prepare_field(field, center_x, center_y)
     robot = Robot(center_x, center_y)
     command_handler(robot, field)
+    save_logs(robot)
