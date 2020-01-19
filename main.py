@@ -1,6 +1,8 @@
 import random
 import math
 import json
+import os
+os.system('cls')
 
 class Map:
     __slots__ = ('width', 'height', 'map', 'barriers', 'barriers_count')
