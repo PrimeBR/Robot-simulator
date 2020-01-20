@@ -199,8 +199,10 @@ class Robot:
         if off_x == 0 and off_y == 0:
             state = f'Robot turned {self.orientation}'
         else:
+            shifted_x = self.c_x + off_x
+            shifted_y = self.c_y + off_y
             state = f'Robot direction: {self.orientation}\n'\
-                    f'Robot arrived to [{self.c_x + off_x}, {self.c_y + off_y}]' \
+                    f'Robot arrived to [{shifted_x}, {shifted_y}]' \
                     f' from [{self.c_x}, {self.c_y}]'
         self.trace += f'{state}\n'
         print(state)

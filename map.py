@@ -1,5 +1,5 @@
 """Module containing the map class"""
-import random
+from random import randint
 import math
 
 
@@ -66,7 +66,6 @@ class Map:
                         return True
                 except IndexError:
                     return True
-
         return False
 
     def free_point(self, x: int, y: int) -> bool:
@@ -80,24 +79,37 @@ class Map:
 
         return True if self.map[y][x] == 0 else False
 
+    def is_full(self):
+        """
+        Check that there is no place for a barrier on the map
+
+        :return: True if map is full else False
+        """
+
+        for y in range(self.height):
+            for x in range(self.width):
+                if self.map[y][x] == 0:
+                    return False
+        return True
+
     def generate_barrier(self, colour: int):
         """
         Generates a new random size barrier
 
         :param colour: colour(id) of generated barrier
-        :return: None if collision was found or
-                hit limit on the depth of recursion
         """
 
-        try:
-            x = random.randint(0, self.width - 1)
-            y = random.randint(0, self.height - 1)
-        except RecursionError:
+        if self.is_full():
             return None
-        width = random.randint(1, math.ceil(min(self.width, self.height) / 3))
-        if self.check_collisions(x, y, width, width):
-            self.generate_barrier(colour)
-            return None
+        x, y, width = 0, 0, 0
+        flag = True
+        while flag:
+            x = randint(0, self.width - 1)
+            y = randint(0, self.height - 1)
+            width = randint(1, math.ceil(min(self.width, self.height) / 3))
+            if not self.check_collisions(x, y, width, width):
+                flag = False
+
         for cy in range(width):
             for cx in range(width):
                 self.map[y + cy][x + cx] = colour
