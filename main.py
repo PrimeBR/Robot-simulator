@@ -7,6 +7,8 @@ import json
 from map import Map
 from robot import Robot
 from typing import Tuple
+
+
 COLORS = {
     'red': '\033[31m',
     'yellow': '\033[33m',
@@ -219,7 +221,8 @@ def save_logs(robot: Robot):
         return None
 
 
-if __name__ == '__main__':
+def start():
+    """Run robot simulator"""
     x = read_param('X')
     y = read_param('Y')
     count = read_param('number of barriers')
@@ -230,3 +233,7 @@ if __name__ == '__main__':
     robot = Robot(center_x, center_y)
     command_handler(robot, field)
     save_logs(robot)
+
+
+if __name__ == '__main__':
+    start()
