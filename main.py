@@ -32,18 +32,18 @@ def calculate_viewzone(field: Map, robot: Robot, x_1: int = 3,
     :return: tuple of the above points
     """
 
-    while robot.get_x() + x_2 > field.get_width():
+    while robot.c_x + x_2 > field.width:
         x_2 -= 1
-    while robot.get_x() - x_1 < 0:
+    while robot.c_x - x_1 < 0:
         x_1 -= 1
-    while robot.get_y() + y_2 > field.get_height():
+    while robot.c_y + y_2 > field.height:
         y_2 -= 1
-    while robot.get_y() - y_1 < 0:
+    while robot.c_y - y_1 < 0:
         y_1 -= 1
-    x_1 = robot.get_x() - x_1
-    x_2 = robot.get_x() + x_2
-    y_1 = robot.get_y() - y_1
-    y_2 = robot.get_y() + y_2
+    x_1 = robot.c_x - x_1
+    x_2 = robot.c_x + x_2
+    y_1 = robot.c_y - y_1
+    y_2 = robot.c_y + y_2
     return x_1, x_2, y_1, y_2
 
 
@@ -55,14 +55,14 @@ def update_picture(field: Map, picture: list):
     :param picture: the image that you want to update
     """
 
-    for y in range(field.get_height()):
-        for x in range(field.get_width()):
-            if field.get_map()[y][x] == 0:
+    for y in range(field.height):
+        for x in range(field.width):
+            if field.map[y][x] == 0:
                 picture[y + 1][x + 1] = ' '
-            elif type(field.get_map()[y][x]) is int:
+            elif type(field.map[y][x]) is int:
                 picture[y + 1][x + 1] = f'{COLORS["red"]}+{COLORS["white"]}'
             else:
-                point = field.get_map()[y][x]
+                point = field.map[y][x]
                 picture[y + 1][x + 1] = f'{COLORS["yellow"]}{point}{COLORS["white"]}'
 
 
@@ -95,8 +95,8 @@ def draw(robot: Robot, field: Map):
 
     purple = COLORS["purple"]
     white = COLORS["white"]
-    picture = [[f'{purple}#{white}' for x in range(field.get_width() + 2)]
-               for row in range(field.get_height() + 2)]
+    picture = [[f'{purple}#{white}' for x in range(field.width + 2)]
+               for row in range(field.height + 2)]
     update_picture(field, picture)
     coord = calculate_viewzone(field, robot)
     color_picture(picture, coord)
@@ -113,7 +113,7 @@ def move_robot(command: str, robot: Robot, map: list):
     """
 
     flag = False
-    while robot.get_direction() != command:
+    while robot.orientation != command:
         robot.handling_command(command)
         if command.find('ROTATE') == -1:
             robot.print_state(0, 0)
@@ -151,7 +151,7 @@ def read_param(param_name: str) -> int:
             print('Error! Enter only an integer value.')
 
 
-def prepare_field(field: Map, x: int, y: int):
+def prepare_field(field: Map, x: int, y: int, count: int):
     """
     Prepares the field for placing the robot on it
 
@@ -160,10 +160,10 @@ def prepare_field(field: Map, x: int, y: int):
               that should be free for the robot
     :param y: the Y-coordinate of the point that
               should be free for the robot
+    :param count: the count of barriers
     """
-    if field.barriers_count > field.get_height() * field.get_width():
-        field.barriers_count = field.get_width() * field.get_height()
-    for index in range(1, field.barriers_count + 1):
+
+    for index in range(1, count + 1):
         field.generate_barrier(index)
     while not field.free_point(x=x, y=y):
         field.remove_barrier(x=x, y=y)
@@ -187,9 +187,9 @@ def command_handler(robot: Robot, field: Map):
         'QUIT'
     )
     while True:
-        x = robot.get_x()
-        y = robot.get_y()
-        field.get_map()[y][x] = robot.view
+        x = robot.c_x
+        y = robot.c_y
+        field.map[y][x] = robot.view
         draw(robot, field)
         command = input('Enter command: ').strip().upper()
         while command not in commands:
@@ -198,10 +198,10 @@ def command_handler(robot: Robot, field: Map):
                   " 'ROTATE90', 'ROTATE180', 'QUIT'")
             command = input('Enter command: ').strip().upper()
         if command == 'QUIT':
-            field.get_map()[y][x] = 0
+            field.map[y][x] = 0
             return None
-        move_robot(command, robot, field.get_map())
-        field.get_map()[y][x] = 0
+        move_robot(command, robot, field.map)
+        field.map[y][x] = 0
 
 
 def save_logs(robot: Robot):
@@ -216,7 +216,7 @@ def save_logs(robot: Robot):
         answer = input('Do you want to save robot traces(Y/N)?: ').upper()
     if answer == 'Y':
         with open('traces.json', 'w') as file:
-            json.dump(robot.get_trace(), file)
+            json.dump(robot.trace, file)
     else:
         return None
 
@@ -226,10 +226,10 @@ def start():
     x = read_param('X')
     y = read_param('Y')
     count = read_param('number of barriers')
-    field = Map(x, y, count)
+    field = Map(x, y)
     center_x = x // 2
     center_y = y // 2
-    prepare_field(field, center_x, center_y)
+    prepare_field(field, center_x, center_y, count)
     robot = Robot(center_x, center_y)
     command_handler(robot, field)
     save_logs(robot)

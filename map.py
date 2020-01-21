@@ -18,35 +18,37 @@ class Map:
             number of barriers on the map
     """
 
-    __slots__ = ('width', 'height', 'map', 'barriers_count')
-
-    def __init__(self, x: int, y: int, count: int):
+    def __init__(self, x: int, y: int):
         """
         Parameters
         :param x: the width of the map
         :param y: the height of the map
-        :param count: number of barriers on the map
         """
         self.width = x
         self.height = y
         self.map = [[0 for x in range(self.width)]
                     for row in range(self.height)]
-        self.barriers_count = count
+        self.barriers_count = 0
 
-    def get_width(self) -> int:
-        """Return the width of the map"""
+    @property
+    def width(self):
+        return self._width
 
-        return self.width
+    @width.setter
+    def width(self, value):
+        if value <= 0:
+            raise ValueError('Width should be more than 0')
+        self._width = value
 
-    def get_height(self) -> int:
-        """Return the height of the map"""
+    @property
+    def height(self):
+        return self._height
 
-        return self.height
-
-    def get_map(self) -> list:
-        """Return the map"""
-
-        return self.map
+    @height.setter
+    def height(self, value):
+        if value <= 0:
+            raise ValueError('Height should be more than 0')
+        self._height = value
 
     def check_collisions(self, x: int, y: int, off_x: int, off_y: int) -> bool:
         """
@@ -109,7 +111,7 @@ class Map:
             width = randint(1, math.ceil(min(self.width, self.height) / 3))
             if not self.check_collisions(x, y, width, width):
                 flag = False
-
+        self.barriers_count += 1
         for cy in range(width):
             for cx in range(width):
                 self.map[y + cy][x + cx] = colour
@@ -128,4 +130,5 @@ class Map:
             for x in range(self.width):
                 if self.map[y][x] == colour:
                     self.map[y][x] = 0
+        self.barriers_count -= 1
         return colour

@@ -54,26 +54,6 @@ class Robot:
         self.step = 1
         self.trace = ''
 
-    def get_direction(self) -> str:
-        """Return the current direction of robot"""
-
-        return self.orientation
-
-    def get_x(self) -> int:
-        """Return the current position of the robot by X"""
-
-        return self.c_x
-
-    def get_y(self) -> int:
-        """Return the current position of the robot by Y"""
-
-        return self.c_y
-
-    def get_trace(self) -> str:
-        """Return current logs of robot movements"""
-
-        return self.trace
-
     def turn_90(self):
         """Rotates the robot 90 degrees"""
 
