@@ -50,7 +50,8 @@ class Map:
             raise ValueError('Height should be more than 0')
         self._height = value
 
-    def check_collisions(self, x: int, y: int, off_x: int, off_y: int) -> bool:
+    def check_collisions(self, x: int, y: int,
+                         off_x: int, off_y: int) -> bool:
         """
         Checks whether there are collisions in a particular zone
 

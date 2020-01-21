@@ -215,14 +215,24 @@ def save_logs(robot: Robot):
     while answer not in ('Y', 'N'):
         answer = input('Do you want to save robot traces(Y/N)?: ').upper()
     if answer == 'Y':
-        with open('traces.json', 'w') as file:
+        with open('../logs/traces.json', 'w') as file:
             json.dump(robot.trace, file)
-    else:
         return None
 
 
 def start():
     """Run robot simulator"""
+    print("\t\tWelcome to ROBOT SIMULATOR\n\n"
+          "Use the following commands to control the robot:\n"
+          "\tUP - move the robot forward\n"
+          "\tDOWN - move the robot backward\n"
+          "\tLEFT - move the robot left\n"
+          "\tRIGHT - move robot right\n"
+          "\tROTATE90 - rotate the robot 90 degrees\n"
+          "\tROTATE180 - rotate the robot 180 degrees.\n"
+          "\tQUIT - to exit from program\n"
+          "Commands can be entered in any case.\n"
+          "-----------------------------------------------\n")
     x = read_param('X')
     y = read_param('Y')
     count = read_param('number of barriers')
