@@ -4,6 +4,8 @@ interaction between the robot and the field, and display,
 as well as displaying the results of work.
 """
 import json
+from platform import system
+from subprocess import call
 from map import Map
 from robot import Robot
 from typing import Tuple
@@ -222,6 +224,11 @@ def save_logs(robot: Robot):
 
 def start():
     """Run robot simulator"""
+
+    if system() == 'Windows':
+        call('cls')
+    else:
+        call('clear')
     print("\t\tWelcome to ROBOT SIMULATOR\n\n"
           "Use the following commands to control the robot:\n"
           "\tUP - move the robot forward\n"
