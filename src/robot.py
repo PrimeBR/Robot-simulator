@@ -190,7 +190,7 @@ class Robot:
             shifted_x = self.c_x + off_x
             shifted_y = self.c_y + off_y
             state = f'Robot direction: {self.orientation}\n'\
-                    f'Robot arrived to [{shifted_x}, {shifted_y}]' \
-                    f' from [{self.c_x}, {self.c_y}]'
+                f'Robot arrived to [{shifted_x}, {shifted_y}]'\
+                f' from [{self.c_x}, {self.c_y}]'
         self.trace += f'{state}\n'
         print(state)
