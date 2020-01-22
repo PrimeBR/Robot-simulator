@@ -7,7 +7,7 @@ architecture and general logic of the program.
 2. Enter in terminal next strings:
 ```
  git clone https://github.com/PrimeBR/Robot-simulator.git
- cd src/Robot-simulator
+ cd Robot-simulator/src
  python3 simulator.py
 ```
 3. If you want to run test enter:
