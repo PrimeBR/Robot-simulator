@@ -100,6 +100,7 @@ class Map:
         Generates a new random size barrier
 
         :param colour: colour(id) of generated barrier
+        :return: None
         """
 
         if self.is_full():

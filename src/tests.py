@@ -3,9 +3,9 @@ Module contains tests for main functions and methods
 from simulator.py, map.py and robot.py modules
 """
 import unittest
+import simulator
 from map import Map
 from robot import Robot
-import simulator
 
 
 class SimulatorTest(unittest.TestCase):

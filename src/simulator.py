@@ -4,11 +4,11 @@ interaction between the robot and the field, and display,
 as well as displaying the results of work.
 """
 import json
+from typing import Tuple
 from platform import system
 from subprocess import call
 from map import Map
 from robot import Robot
-from typing import Tuple
 
 
 COLORS = {
@@ -55,6 +55,7 @@ def update_picture(field: Map, picture: list):
 
     :param field: the field that is used to update the field image
     :param picture: the image that you want to update
+    :return: None
     """
 
     for y in range(field.height):
@@ -74,6 +75,7 @@ def color_picture(picture: list, coord: Tuple):
 
     :param picture: images for which colors are added
     :param coord: coordinates of view zone
+    :return: None
     """
 
     white = COLORS['white']
@@ -93,6 +95,7 @@ def draw(robot: Robot, field: Map):
 
     :param robot: the robot whose position you want to display
     :param field: the field where the robot moves
+    :return: None
     """
 
     purple = COLORS["purple"]
@@ -112,6 +115,7 @@ def move_robot(command: str, robot: Robot, map: list):
     :param command: the command you want to execute
     :param robot: the robot for which the command is passed
     :param map: the field where the robot moves
+    :return: None
     """
 
     flag = False
@@ -163,6 +167,7 @@ def prepare_field(field: Map, x: int, y: int, count: int):
     :param y: the Y-coordinate of the point that
               should be free for the robot
     :param count: the count of barriers
+    :return: None
     """
 
     for index in range(1, count + 1):
@@ -177,6 +182,7 @@ def command_handler(robot: Robot, field: Map):
 
     :param robot: the robot for which commands are sent
     :param field: the field where the robot moves
+    :return: None
     """
 
     commands = (
@@ -211,6 +217,7 @@ def save_logs(robot: Robot):
     Prompts the user to record the robot's traces in a json file
 
     :param robot: robot whose traces will be recorded
+    :return: None
     """
 
     answer = ''
@@ -226,7 +233,7 @@ def start():
     """Run robot simulator"""
 
     if system() == 'Windows':
-        call('cls')
+        call('cls', shell=True)
     else:
         call('clear')
     print("\t\tWelcome to ROBOT SIMULATOR\n\n"

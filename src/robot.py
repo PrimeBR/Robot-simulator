@@ -67,8 +67,10 @@ class Robot:
     def check_angle(self):
         """
         Reduces the robot's angle by 360
-         if it becomes more or less than 360 degrees
-         """
+        if it becomes more or less than 360 degrees
+
+        :return: None
+        """
 
         if self.angle >= 360:
             self.angle -= 360
@@ -81,6 +83,7 @@ class Robot:
          performs the appropriate actions for the command
 
         :param command: the command to be processed
+        :return: None
         """
 
         if command == 'ROTATE90':
@@ -95,7 +98,11 @@ class Robot:
         self.check_angle()
 
     def step_forward(self):
-        """Forces the robot to take a step in a certain direction"""
+        """
+        Forces the robot to take a step in a certain direction
+
+        :return: None
+        """
 
         if self.orientation == 'UP':
             self.c_y -= self.step
@@ -116,7 +123,7 @@ class Robot:
              the robot was given a rotation command or not.
              (default is None)
         :return:
-            Returns a pair of points
+            returns a pair of points
             that are responsible for the offset for the robot's offset
         """
 
@@ -174,6 +181,7 @@ class Robot:
         
         :param off_x: robot's offset by X
         :param off_y: robot's offset by Y
+        :return: None
         """
 
         if off_x == 0 and off_y == 0:
