@@ -8,7 +8,7 @@ architecture and general logic of the program.
 ```
  git clone https://github.com/PrimeBR/Robot-simulator.git
  cd src/Robot-simulator
- python3 src/simulator.py
+ python3 simulator.py
 ```
 3. If you want to run test enter:
 ```
